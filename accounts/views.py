@@ -11,10 +11,10 @@ import json
 def login_view(request):
     if request.method == 'POST':
         data = json.loads(request.body)
-        username = data.get('username', None)
+        email = data.get('email', None)
         password = data.get('password', None)
 
-        usuario = authenticate(username=username, password=password)
+        usuario = authenticate(email=email, password=password)
 
         if usuario is not None:
             login(request, usuario)
@@ -33,6 +33,7 @@ def login_view(request):
                                            })
 
 
+@csrf_exempt
 def logout_view(request):
     if request.method == 'POST':
         logout(request)
@@ -46,6 +47,7 @@ def logout_view(request):
                                            })
 
 
+@csrf_exempt
 @login_required  # Solo usuarios autenticados pueden acceder a esta vista
 def session_view(request):
     usuario = request.user
