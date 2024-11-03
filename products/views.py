@@ -6,8 +6,20 @@ import json
 
 # Products view
 def products(request):
-    products = Product.objects.all()
-    products_data = list(products.values('id', 'name', 'price', 'description', 'stock', 'category__name', 'image', 'is_featured'))
+    products = Product.objects.all().select_related('category')
+    products_data = []
+    
+    for product in products:
+        products_data.append({
+            'id': product.id,
+            'name': product.name,
+            'price': product.price,
+            'description': product.description,
+            'stock': product.stock,
+            'category': product.category.name,
+            'image': product.image.url if product.image else None,
+            'is_featured': product.is_featured
+        })
     
     return JsonResponse({'products': products_data})
 
