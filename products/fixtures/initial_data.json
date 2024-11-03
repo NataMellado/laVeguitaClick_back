@@ -1,0 +1,30 @@
+[
+    {"model": "products.category", "pk": 1, "fields": {"name": "Verduras"}},
+    {"model": "products.category", "pk": 2, "fields": {"name": "Frutas"}},
+    {"model": "products.category", "pk": 3, "fields": {"name": "Cereales y Legumbres"}},
+    {"model": "products.category", "pk": 4, "fields": {"name": "Frutos Secos y Semillas"}},
+
+    {"model": "products.product", "pk": 1, "fields": {"name": "Zanahoria Orgánica", "price": "800", "description": "Zanahorias frescas sin pesticidas.", "stock": 100, "category": 1, "is_featured": true}},
+    {"model": "products.product", "pk": 2, "fields": {"name": "Lechuga Orgánica", "price": "900", "description": "Lechugas frescas de cultivo orgánico.", "stock": 80, "category": 1}},
+    {"model": "products.product", "pk": 3, "fields": {"name": "Tomate Cherry", "price": "1500", "description": "Tomates cherry dulces y jugosos.", "stock": 60, "category": 1}},
+    {"model": "products.product", "pk": 4, "fields": {"name": "Espinaca", "price": "1000", "description": "Hojas de espinaca frescas y verdes.", "stock": 70, "category": 1}},
+    {"model": "products.product", "pk": 5, "fields": {"name": "Pimentón Rojo", "price": "1200", "description": "Pimentones rojos y frescos.", "stock": 50, "category": 1, "is_featured": true}},
+
+    {"model": "products.product", "pk": 6, "fields": {"name": "Manzana Roja", "price": "700", "description": "Manzanas frescas y crujientes.", "stock": 100, "category": 2, "is_featured": true}},
+    {"model": "products.product", "pk": 7, "fields": {"name": "Plátano Orgánico", "price": "800", "description": "Plátanos cultivados orgánicamente.", "stock": 90, "category": 2}},
+    {"model": "products.product", "pk": 8, "fields": {"name": "Naranja", "price": "600", "description": "Naranjas frescas y jugosas.", "stock": 80, "category": 2}},
+    {"model": "products.product", "pk": 9, "fields": {"name": "Frutilla", "price": "2000", "description": "Frutillas dulces y frescas.", "stock": 50, "category": 2}},
+    {"model": "products.product", "pk": 10, "fields": {"name": "Arándano", "price": "3000", "description": "Arándanos frescos y antioxidantes.", "stock": 40, "category": 2}},
+
+    {"model": "products.product", "pk": 11, "fields": {"name": "Quinoa", "price": "4000", "description": "Quinoa rica en proteínas y fibra.", "stock": 30, "category": 3}},
+    {"model": "products.product", "pk": 12, "fields": {"name": "Arroz Integral", "price": "2500", "description": "Arroz integral de grano largo.", "stock": 60, "category": 3, "is_featured": true}},
+    {"model": "products.product", "pk": 13, "fields": {"name": "Lentejas", "price": "2000", "description": "Lentejas ricas en proteínas y hierro.", "stock": 80, "category": 3}},
+    {"model": "products.product", "pk": 14, "fields": {"name": "Garbanzos", "price": "2200", "description": "Garbanzos orgánicos.", "stock": 70, "category": 3}},
+    {"model": "products.product", "pk": 15, "fields": {"name": "Avena", "price": "1500", "description": "Avena ideal para desayunos saludables.", "stock": 100, "category": 3}},
+
+    {"model": "products.product", "pk": 16, "fields": {"name": "Nueces", "price": "8000", "description": "Nueces frescas y crujientes.", "stock": 50, "category": 4}},
+    {"model": "products.product", "pk": 17, "fields": {"name": "Almendras", "price": "9000", "description": "Almendras ricas en nutrientes.", "stock": 60, "category": 4}},
+    {"model": "products.product", "pk": 18, "fields": {"name": "Semillas de Chía", "price": "5000", "description": "Semillas de chía altas en omega-3.", "stock": 40, "category": 4}},
+    {"model": "products.product", "pk": 19, "fields": {"name": "Semillas de Linaza", "price": "3000", "description": "Linaza rica en fibra y omega-3.", "stock": 80, "category": 4}},
+    {"model": "products.product", "pk": 20, "fields": {"name": "Pistachos", "price": "11000", "description": "Pistachos frescos y saludables.", "stock": 30, "category": 4, "is_featured": true}}
+]
