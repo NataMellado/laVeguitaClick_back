@@ -8,6 +8,7 @@ class CustomUser(AbstractUser):
         ('gerente', 'Gerente'),
     ]
     rol = models.CharField(max_length=20, choices=ROLES, default='user')
+    usuario = models.CharField(max_length=40, null=False, blank=False, default='Usuario')
     email = models.EmailField(unique=True)
     username = None
     USERNAME_FIELD = 'email'
