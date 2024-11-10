@@ -26,5 +26,13 @@
     {"model": "products.product", "pk": 17, "fields": {"name": "Almendras", "price": "9000", "description": "Almendras ricas en nutrientes.", "stock": 60, "category": 4}},
     {"model": "products.product", "pk": 18, "fields": {"name": "Semillas de Chía", "price": "5000", "description": "Semillas de chía altas en omega-3.", "stock": 40, "category": 4}},
     {"model": "products.product", "pk": 19, "fields": {"name": "Semillas de Linaza", "price": "3000", "description": "Linaza rica en fibra y omega-3.", "stock": 80, "category": 4}},
-    {"model": "products.product", "pk": 20, "fields": {"name": "Pistachos", "price": "11000", "description": "Pistachos frescos y saludables.", "stock": 30, "category": 4, "is_featured": true}}
+    {"model": "products.product", "pk": 20, "fields": {"name": "Pistachos", "price": "11000", "description": "Pistachos frescos y saludables.", "stock": 30, "category": 4, "is_featured": true}},
+
+    {"model": "products.supplier", "pk": 1, "fields": {"name": "La Granjita", "email": "lagranjita@gmail.com", "phone": 123456, "address": "Calle del campo #123"}},
+    {"model": "products.supplier", "pk": 2, "fields": {"name": "Productos del Valle", "email": "productosdelvalle@gmail.com", "phone": 789012, "address": "Avenida de las Flores #456"}},
+    {"model": "products.supplier", "pk": 3, "fields": {"name": "Frescos y Naturales", "email": "frescosynaturales@gmail.com", "phone": 345678, "address": "Calle Primavera #789"}},
+    {"model": "products.supplier", "pk": 4, "fields": {"name": "Distribuidora Los Pinos", "email": "dlospinos@gmail.com", "phone": 901234, "address": "Camino Verde #101"}},
+    {"model": "products.supplier", "pk": 5, "fields": {"name": "La Huerta Sana", "email": "lahuertasana@gmail.com", "phone": 567890, "address": "Carretera del Sol #202"}},
+    {"model": "products.supplier", "pk": 6, "fields": {"name": "Frutos del Bosque", "email": "frutosdelbosque@gmail.com", "phone": 234567, "address": "Sendero Natural #303"}}
+
 ]

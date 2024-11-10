@@ -12,4 +12,8 @@ class Product(models.Model):
 class Category(models.Model):
     name = models.CharField(max_length=200)
     
-
+class Supplier(models.Model):
+    name = models.CharField(max_length=200)
+    email = models.CharField(max_length=200)
+    phone = models.IntegerField()
+    address = models.CharField(max_length=200)
