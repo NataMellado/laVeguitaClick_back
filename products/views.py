@@ -30,7 +30,11 @@ def serialize_supplier(supplier):
         'address': supplier.address
     }
     
-
+# Función para obtener categorías
+def category_list(request):
+    categories = Category.objects.all()
+    catefories_data = [{'id': category.id, 'name': category.name} for category in categories]
+    return JsonResponse({'categories': catefories_data})
 
 
 # GET y POST para la lista de productos
@@ -41,7 +45,6 @@ def products(request):
     # GET para obtener todos los productos en orden de creación
     if request.method == 'GET':
         products = Product.objects.select_related('category').all().order_by('-id')
-        
         products_data = [serialize_product(product) for product in products]
         return JsonResponse({'products': products_data})
     
@@ -59,11 +62,17 @@ def products(request):
             is_featured = data.get('is_featured', False)
             
             if not all([name, price, description, stock, category_name]):
-                return JsonResponse({'error': 'Por favor ingrese todos los campos requeridos'}, status=400)
+                return JsonResponse({
+                    'status': 'alert',
+                    'message': 'Por favor ingrese todos los campos requeridos'
+                }, status=400)
         
             category = Category.objects.filter(name=category_name).first()
             if not category:
-                return JsonResponse({'error': 'La categoría no existe'}, status=400)
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'La categoría no existe'
+                }, status=400)
         
             product = Product.objects.create(
                 name=name,
@@ -74,10 +83,16 @@ def products(request):
                 image=image,
                 is_featured=is_featured
             )
-            return JsonResponse({'message': 'Producto creado correctamente'})
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Producto creado correctamente'
+            })
         
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Los datos enviados no son válidos'}, status=400)
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Los datos enviados no son válidos'
+            }, status=400)
 
 
 
@@ -108,15 +123,24 @@ def product_detail(request, product_id):
                 product.category = category
 
             product.save()
-            return JsonResponse({'message': 'Producto actualizado correctamente'})
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Producto actualizado correctamente'
+            }, status=200)
         
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Los datos enviados no son válidos'}, status=400)
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Los datos enviados no son válidos'
+            }, status=400)
         
     # DELETE para eliminar un producto
     elif request.method == 'DELETE':
         product.delete()
-        return JsonResponse({'message': 'Producto eliminado correctamente'})
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Producto eliminado correctamente'
+        }, status=200)
 
 
 
