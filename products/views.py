@@ -38,9 +38,10 @@ def serialize_supplier(supplier):
 @require_http_methods(["GET", "POST"])
 def products(request):
     
-    # GET para obtener todos los productos
+    # GET para obtener todos los productos en orden de creación
     if request.method == 'GET':
-        products = Product.objects.select_related('category').all()
+        products = Product.objects.select_related('category').all().order_by('-id')
+        
         products_data = [serialize_product(product) for product in products]
         return JsonResponse({'products': products_data})
     
