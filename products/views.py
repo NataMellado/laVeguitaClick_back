@@ -7,7 +7,8 @@ import json
 
 
 
-# Función para serializar la instancia de un producto
+# Función para serializar la instancia de un producto, osea, convertirlo en un diccionario de Python 
+# para que pueda ser convertido a JSON
 def serialize_product(product):
     return {
         'id': product.id,
@@ -30,12 +31,89 @@ def serialize_supplier(supplier):
         'address': supplier.address
     }
     
-# Función para obtener categorías
-def category_list(request):
-    categories = Category.objects.all()
-    catefories_data = [{'id': category.id, 'name': category.name} for category in categories]
-    return JsonResponse({'categories': catefories_data})
+# Funciòn para serializar la instancia de una categoría
+def serialize_category(category):
+    return {
+        'id': category.id,
+        'name': category.name
+    }
+    
+# GET y POST para la lista de categorías
+@csrf_exempt
+@require_http_methods(["GET", "POST"])
+def categories(request):
+    
+    # GET para obtener todas las categorías en orden de creación
+    if request.method == 'GET':
+        categories = Category.objects.all().order_by('-id')
+        categories_data = [serialize_category(category) for category in categories]
+        return JsonResponse({'categories': categories_data})
+    
+    # POST para añadir una nueva categoría
+    elif request.method == 'POST':
+        
+        try: 
+            data = json.loads(request.body)
+            name = data.get('name')
+            
+            if not name:
+                return JsonResponse({
+                    'status': 'alert',
+                    'message': 'Por favor ingrese el nombre de la categoría'
+                }, status=400)
+        
+            category = Category.objects.create(name=name)
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Categoría creada correctamente'
+            })
+        
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Los datos enviados no son válidos'
+            }, status=400)
 
+# GET, PUT y DELETE para una categoría específica
+@csrf_exempt
+@require_http_methods(["GET", "PUT", "DELETE"])
+def category_detail(request, category_id):
+    category = get_object_or_404(Category, id=category_id)
+
+    # GET para obtener una categoría específica
+    if request.method == 'GET':
+        return JsonResponse({'category': serialize_category(category)})
+
+    # PUT para actualizar una categoría
+    elif request.method == 'PUT':
+        try: 
+            data = json.loads(request.body)
+            category.name = data.get('name', category.name)
+            category.save()
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Categoría actualizada correctamente'
+            }, status=200)
+        
+        except json.JSONDecodeError:
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Los datos enviados no son válidos'
+            }, status=400)
+        
+    # DELETE para eliminar una categoría
+    elif request.method == 'DELETE':
+        if Product.objects.filter(category=category).exists():
+            return JsonResponse({
+                'status': 'error',
+                'message': 'No se puede eliminar la categoría porque tiene productos asociados'
+            }, status=400)
+            
+        category.delete()
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Categoría eliminada correctamente'
+        }, status=200)
 
 # GET y POST para la lista de productos
 @csrf_exempt
@@ -94,9 +172,6 @@ def products(request):
                 'message': 'Los datos enviados no son válidos'
             }, status=400)
 
-
-
-
 # GET, PUT y DELETE para un producto específico
 @csrf_exempt
 @require_http_methods(["GET", "PUT", "DELETE"])
@@ -142,17 +217,14 @@ def product_detail(request, product_id):
             'message': 'Producto eliminado correctamente'
         }, status=200)
 
-
-
-
 # GET y POST para la lista de proveedores
 @csrf_exempt
 @require_http_methods(["GET", "POST"])
 def suppliers(request):
         
-        # GET para obtener todos los proveedores
+        # GET para obtener todos los proveedores en orden de creación
         if request.method == 'GET':
-            suppliers = Supplier.objects.all()
+            suppliers = Supplier.objects.all().order_by('-id')
             suppliers_data = [serialize_supplier(supplier) for supplier in suppliers]
             return JsonResponse({'suppliers': suppliers_data})
         
@@ -167,7 +239,10 @@ def suppliers(request):
                 address = data.get('address')
                 
                 if not all([name, email, phone, address]):
-                    return JsonResponse({'error': 'Por favor ingrese todos los campos requeridos'}, status=400)
+                    return JsonResponse({
+                        'status': 'alert',
+                        'message': 'Por favor ingrese todos los campos requeridos'
+                    }, status=400)
             
                 supplier = Supplier.objects.create(
                     name=name,
@@ -175,10 +250,16 @@ def suppliers(request):
                     phone=phone,
                     address=address
                 )
-                return JsonResponse({'message': 'Proveedor creado correctamente'})
+                return JsonResponse({
+                    'status': 'success',
+                    'message': 'Proveedor creado correctamente'
+                })
             
             except json.JSONDecodeError:
-                return JsonResponse({'error': 'Los datos enviados no son válidos'}, status=400)
+                return JsonResponse({
+                    'status': 'error',
+                    'message': 'Los datos enviados no son válidos'
+                }, status=400)
             
 # GET, PUT y DELETE para un proveedor específico
 @csrf_exempt
@@ -199,15 +280,25 @@ def supplier_detail(request, supplier_id):
             supplier.phone = data.get('phone', supplier.phone)
             supplier.address = data.get('address', supplier.address)
             supplier.save()
-            return JsonResponse({'message': 'Proveedor actualizado correctamente'})
+            return JsonResponse({
+                'status': 'success',
+                'message': 'Proveedor actualizado correctamente'
+            }, status=200)
         
         except json.JSONDecodeError:
-            return JsonResponse({'error': 'Los datos enviados no son válidos'}, status=400)
+            return JsonResponse({
+                'status': 'error',
+                'message': 'Los datos enviados no son válidos'
+            }, status=400)
         
     # DELETE para eliminar un proveedor
     elif request.method == 'DELETE':
         supplier.delete()
-        return JsonResponse({'message': 'Proveedor eliminado correctamente'})
+        return JsonResponse({
+            'status': 'success',
+            'message': 'Proveedor eliminado correctamente'
+        }, status=200)
+                        
     
     
     
