@@ -6,6 +6,7 @@ class CustomUser(AbstractUser):
     ROLES = [
         ('user', 'Usuario'),
         ('gerente', 'Gerente'),
+        ('conductor', 'Conductor'),
     ]
     rol = models.CharField(max_length=20, choices=ROLES, default='user')
     usuario = models.CharField(max_length=40, null=False, blank=False, default='Usuario')

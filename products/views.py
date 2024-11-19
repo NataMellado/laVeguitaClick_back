@@ -7,8 +7,7 @@ import json
 
 
 
-# Función para serializar la instancia de un producto, osea, convertirlo en un diccionario de Python 
-# para que pueda ser convertido a JSON
+# Función para serializar la instancia de un producto
 def serialize_product(product):
     return {
         'id': product.id,
@@ -135,17 +134,18 @@ def products(request):
             price = data.get('price')
             description = data.get('description')
             stock = data.get('stock')
-            category_name = data.get('category')
+            category_id = data.get('category')
             image = data.get('image', None)
             is_featured = data.get('is_featured', False)
-            
-            if not all([name, price, description, stock, category_name]):
+   
+            if not all([name, price, description, stock, category_id]):
                 return JsonResponse({
                     'status': 'alert',
                     'message': 'Por favor ingrese todos los campos requeridos'
                 }, status=400)
         
-            category = Category.objects.filter(name=category_name).first()
+            category = Category.objects.filter(id=category_id).first()
+            
             if not category:
                 return JsonResponse({
                     'status': 'error',
@@ -211,6 +211,13 @@ def product_detail(request, product_id):
         
     # DELETE para eliminar un producto
     elif request.method == 'DELETE':
+        # Verificar si el producto está asociado a una orden con filter
+        if product.orderitem_set.exists():
+            return JsonResponse({
+                'status': 'error',
+                'message': 'No se puede eliminar el producto porque tiene órdenes asociadas'
+            }, status=400)
+        
         product.delete()
         return JsonResponse({
             'status': 'success',
