@@ -12,34 +12,35 @@ def register_view(request):
     if request.method == 'POST':
         data = json.loads(request.body)
         email = data.get('email', None)
-        usuario = data.get('usuario', None)
+        first_name = data.get('first_name', None)
+        last_name = data.get('last_name', None)
         password = data.get('password', None)
 
-        if email is None or password is None or usuario is None:
-            return JsonResponse({'error': 'Por favor ingrese email, password y usuario'},
+        if email is None or password is None or first_name is None or last_name is None:
+            return JsonResponse({'error': 'Por favor ingrese email, password, nombre y apellido válidos!'},
                                 status=400,
                                 json_dumps_params={'ensure_ascii': False
                                                    })
 
-        if email == '' or password == '' or usuario == '':
-            return JsonResponse({'error': 'Por favor ingrese email, password y usuario'},
+        if email == '' or password == '' or first_name == '' or last_name == '':
+            return JsonResponse({'error': 'Por favor ingrese email, password, nombre y apellido válidos!'},
                                 status=400,
                                 json_dumps_params={'ensure_ascii': False
                                                    })
 
         if CustomUser.objects.filter(email=email).exists():
-            return JsonResponse({'error': 'El email ya está en uso!'},
+            return JsonResponse({'error': 'El email ya está en uso'},
                                 status=400,
                                 json_dumps_params={'ensure_ascii': False
                                                    })
 
-        user = CustomUser.objects.create_user(email=email, password=password, usuario=usuario, rol='gerente')
+        user = CustomUser.objects.create_user(email=email, password=password, first_name=first_name, last_name=last_name)
         user.save()
-        return JsonResponse({'message': 'Usuario creado exitosamente!'},
+        return JsonResponse({'message': 'Usuario creado exitosamente'},
                             status=201,
                             json_dumps_params={'ensure_ascii': False
                                                })
-    return JsonResponse({'error': 'Petición inválida!'},
+    return JsonResponse({'error': 'Petición inválida'},
                         status=400,
                         json_dumps_params={'ensure_ascii': False
                                            })
@@ -92,7 +93,8 @@ def session_view(request):
         usuario = request.user
         return JsonResponse({
             'estaAutenticado': True,
-            'usuario': usuario.usuario,
+            'nombre': usuario.first_name,
+            'apellido': usuario.last_name,
             'email': usuario.email,
             'rol': usuario.rol
         },
@@ -101,3 +103,5 @@ def session_view(request):
     else:
         print("no está autenticado")
         return JsonResponse({'estaAutenticado': False}, status=200)
+    
+    

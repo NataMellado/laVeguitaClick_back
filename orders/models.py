@@ -3,12 +3,11 @@ from django.conf import settings
 from products.models import Product
 
 class Driver(models.Model):
+    readonly_fields = ('id',)
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     phone_number = models.CharField(max_length=15)
-    license_number = models.CharField(max_length=20)
+    license_number = models.CharField(max_length=20, unique=True)
 
-    def __str__(self):
-        return f"{self.user.get_full_name()} ({self.license_number})"
 
 
 class Vehicle(models.Model):
@@ -20,7 +19,8 @@ class Vehicle(models.Model):
 
     license_plate = models.CharField(max_length=10, unique=True)
     vehicle_type = models.CharField(max_length=20, choices=VEHICLE_TYPE_CHOICES)
-    driver = models.OneToOneField(Driver, on_delete=models.SET_NULL, null=True, blank=True)
+    model = models.CharField(max_length=50, null=True, blank=True)
+    driver = models.ForeignKey(Driver, on_delete=models.SET_NULL, null=True, blank=True, related_name='vehicles')
 
     def __str__(self):
         return f"{self.vehicle_type} - {self.license_plate} ({self.driver})"

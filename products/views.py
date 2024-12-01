@@ -64,7 +64,8 @@ def categories(request):
             category = Category.objects.create(name=name)
             return JsonResponse({
                 'status': 'success',
-                'message': 'Categoría creada correctamente'
+                'message': 'Categoría creada correctamente',
+                'data': serialize_category(category)
             })
         
         except json.JSONDecodeError:
@@ -163,7 +164,8 @@ def products(request):
             )
             return JsonResponse({
                 'status': 'success',
-                'message': 'Producto creado correctamente'
+                'message': 'Producto creado correctamente',
+                'data': serialize_product(product)
             })
         
         except json.JSONDecodeError:

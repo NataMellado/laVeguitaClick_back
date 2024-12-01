@@ -8,12 +8,15 @@ class CustomUser(AbstractUser):
         ('gerente', 'Gerente'),
         ('conductor', 'Conductor'),
     ]
+    readonly_fields = ('id',)
     rol = models.CharField(max_length=20, choices=ROLES, default='user')
-    usuario = models.CharField(max_length=40, null=False, blank=False, default='Usuario')
     email = models.EmailField(unique=True)
     username = None
+    first_name = models.CharField(max_length=100, verbose_name='Nombre')
+    last_name = models.CharField(max_length=100, verbose_name='Apellido')
+    
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['first_name', 'last_name']
     
     objects = CustomUserManager()
     
