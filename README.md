@@ -13,7 +13,7 @@
 
 
 
-# Crear usuarios:
+# Crear usuarios (solo si no están en accounts/fixtures/initial_data.json)
 
 1. python manage.py shell
 
